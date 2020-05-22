@@ -30,7 +30,11 @@
   font-size: 19px;
   font-weight: normal;
   margin: 5px;
-}`;
+}
+.tag__count {
+  background: unset !important;
+}
+`;
 
   function getBackgroundColor() {
     //   Adapt background color to theme, we create an element with the
@@ -78,6 +82,17 @@
     if (tagEdit !== null) {
       tagEdit.classList.add('layout--narrow');
     }
+
+    // Revert tag styling of 2020-05-22
+    for (const tag of tagBox.querySelectorAll('.tag-list .tag')) {
+      const span = tag.firstElementChild;
+      const name = tag.querySelector('.tag__name');
+      const count = tag.querySelector('.tag__count');
+      count.innerText = ' (' + count.innerText + ') ';
+      span.insertAdjacentElement('afterbegin', count);
+      span.insertAdjacentElement('afterbegin', name);
+    }
+
     content.insertBefore(newDiv, imageDescription.parentElement);
     content.insertBefore(tagBox, imageDescription.parentElement);
     if (adBox !== null) {
