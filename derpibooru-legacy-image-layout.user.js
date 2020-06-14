@@ -112,7 +112,6 @@ function revertTagStyle(parent = document) {
     const name = $('.tag__name', tag);
     const count = $('.tag__count', tag);
     count.innerText = ' (' + count.innerText + ') ';
-    // span.insertAdjacentElement('afterbegin', count);
     name.appendChild(count);
     span.insertAdjacentElement('afterbegin', name);
   }
