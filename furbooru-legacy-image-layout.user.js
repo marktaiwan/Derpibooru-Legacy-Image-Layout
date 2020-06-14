@@ -1,5 +1,5 @@
 // ==UserScript==
-// @name         Derpibooru Legacy Image Layout
+// @name         Furbooru Legacy Image Layout
 // @description  Revert styling changes.
 // @version      1.1.0
 // @author       Marker
@@ -7,8 +7,7 @@
 // @namespace    https://github.com/marktaiwan/
 // @homepageURL  https://github.com/marktaiwan/Derpibooru-Legacy-Image-Layout
 // @supportURL   https://github.com/marktaiwan/Derpibooru-Legacy-Image-Layout/issues
-// @match        https://*.derpibooru.org/*
-// @match        https://*.trixiebooru.org/*
+// @match        https://*.furbooru.org/*
 // @grant        none
 // @inject-into  content
 // @require      https://openuserjs.org/src/libs/mark.taiwangmail.com/Derpibooru_Unified_Userscript_UI_Utility.js?v1.2.2
@@ -18,7 +17,7 @@
 'use strict';
 
 const SCRIPT_ID = 'legacy_layout';
-const config = ConfigManager('Derpibooru Legacy Image Layout', SCRIPT_ID, 'Revert styling changes.');
+const config = ConfigManager('Furbooru Legacy Image Layout', SCRIPT_ID, 'Revert styling changes.');
 config.registerSetting({
   title: 'Upload info',
   key: 'metabar',
