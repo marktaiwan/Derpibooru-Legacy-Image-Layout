@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Furbooru Legacy Image Layout
 // @description  Revert styling changes.
-// @version      1.1.0
+// @version      1.1.1
 // @author       Marker
 // @license      MIT
 // @namespace    https://github.com/marktaiwan/
@@ -89,6 +89,8 @@ function initCSS() {
   const TAG_STYLE_CSS = `
 .tag__count {
   background: unset !important;
+  margin: 0px;
+  padding: 0px;
 }`;
 
   if (METABAR) CSS += METABAR_CSS;
