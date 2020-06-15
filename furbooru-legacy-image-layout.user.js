@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Furbooru Legacy Image Layout
 // @description  Revert styling changes.
-// @version      1.1.1
+// @version      1.1.2
 // @author       Marker
 // @license      MIT
 // @namespace    https://github.com/marktaiwan/
@@ -18,6 +18,13 @@
 
 const SCRIPT_ID = 'legacy_layout';
 const config = ConfigManager('Furbooru Legacy Image Layout', SCRIPT_ID, 'Revert styling changes.');
+config.registerSetting({
+  title: 'Left aligned layout',
+  key: 'align_left',
+  description: 'Align content to the left side of the page.',
+  type: 'checkbox',
+  defaultValue: true
+});
 config.registerSetting({
   title: 'Upload info',
   key: 'metabar',
@@ -47,6 +54,7 @@ config.registerSetting({
   defaultValue: true
 });
 
+const ALIGN_LEFT = config.getEntry('align_left');
 const METABAR = config.getEntry('metabar');
 const DESC = config.getEntry('description');
 const TAG_BLOCK = config.getEntry('tag_block');
@@ -119,6 +127,7 @@ function revertTagStyle(parent = document) {
 }
 
 initCSS();
+const isMainImage = ($('#image_target') !== null)
 const extrameta = $('#extrameta'),
       imageDescription = $('.image-description'),
       imageDescriptionText = $('.image-description__text'),
@@ -128,45 +137,54 @@ const extrameta = $('#extrameta'),
       tagEdit = $('div.js-imageform'),
       adBox = $('#imagespns');
 
-// Revert metadata bar
-if (METABAR && extrameta !== null) {
-  extrameta.classList.add('block__header--light');
-}
-
-// Run if elements exists on page
-if ([content, imageDescription, tagBox, imageDescriptionText].every(ele => ele !== null)) {
-  // Revert tag width
-  if (TAG_BLOCK) {
-    const oldDiv = imageDescription.parentElement;
-    const newDiv = document.createElement('div');
-    newDiv.classList.add('layout--narrow');
-    content.insertBefore(newDiv, oldDiv);
-    content.insertBefore(tagBox, oldDiv);
-    if (tagEdit !== null) tagEdit.classList.add('layout--narrow');
-
-    if (adBox !== null) newDiv.appendChild(adBox);
-    newDiv.appendChild(imageDescription);
-    if (descriptionForm !== null) newDiv.appendChild(descriptionForm);
+if (isMainImage) {
+  if (ALIGN_LEFT) {
+    const container = $('#container');
+    if (container) {
+      container.classList.remove('layout--center-aligned');
+    }
   }
 
-  // Hide empty description box
-  if (DESC && imageDescriptionText.firstChild === null && $('#edit-description', imageDescription) === null) {
-    imageDescription.classList.toggle('hidden');
+  // Revert metadata bar
+  if (METABAR && extrameta !== null) {
+    extrameta.classList.add('block__header--light');
   }
 
-  // Reapply changes on tag edit
-  const observer = new MutationObserver(records => {
-    for (const record of records) {
-      for (const node of record.addedNodes) {
-        if (node.matches('.js-tagsauce')) {
-          const tagEdit = $('.js-imageform', node);
-          if (TAG_BLOCK && tagEdit) tagEdit.classList.add('layout--narrow');
-          if (TAG_STYLE) revertTagStyle(node);
+  // Run if elements exists on page
+  if ([content, imageDescription, tagBox, imageDescriptionText].every(ele => ele !== null)) {
+    // Revert tag width
+    if (TAG_BLOCK) {
+      const oldDiv = imageDescription.parentElement;
+      const newDiv = document.createElement('div');
+      newDiv.classList.add('layout--narrow');
+      content.insertBefore(newDiv, oldDiv);
+      content.insertBefore(tagBox, oldDiv);
+      if (tagEdit !== null) tagEdit.classList.add('layout--narrow');
+
+      if (adBox !== null) newDiv.appendChild(adBox);
+      newDiv.appendChild(imageDescription);
+      if (descriptionForm !== null) newDiv.appendChild(descriptionForm);
+    }
+
+    // Hide empty description box
+    if (DESC && imageDescriptionText.firstChild === null && $('#edit-description', imageDescription) === null) {
+      imageDescription.classList.toggle('hidden');
+    }
+
+    // Reapply changes on tag edit
+    const observer = new MutationObserver(records => {
+      for (const record of records) {
+        for (const node of record.addedNodes) {
+          if (node.matches('.js-tagsauce')) {
+            const tagEdit = $('.js-imageform', node);
+            if (TAG_BLOCK && tagEdit) tagEdit.classList.add('layout--narrow');
+            if (TAG_STYLE) revertTagStyle(node);
+          }
         }
       }
-    }
-  });
-  if (TAG_BLOCK || TAG_STYLE) observer.observe(content, {childList: true});
+    });
+    if (TAG_BLOCK || TAG_STYLE) observer.observe(content, {childList: true});
+  }
 }
 
 if (TAG_STYLE) revertTagStyle();
