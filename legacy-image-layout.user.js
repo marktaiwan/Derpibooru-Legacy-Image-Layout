@@ -39,18 +39,10 @@ config.registerSetting({
   type: 'checkbox',
   defaultValue: true
 });
-config.registerSetting({
-  title: 'Tags style',
-  key: 'tag_style',
-  description: 'Use the old tag styling.',
-  type: 'checkbox',
-  defaultValue: true
-});
 
 const METABAR = config.getEntry('metabar');
 const DESC = config.getEntry('description');
 const TAG_BLOCK = config.getEntry('tag_block');
-const TAG_STYLE = config.getEntry('tag_style');
 
 const $ = (selector, parent = document) => parent.querySelector(selector);
 const $$ = (selector, parent = document) => parent.querySelectorAll(selector);
@@ -86,14 +78,9 @@ function initCSS() {
   margin: 6px;
   margin-bottom: 18px;
 }`;
-  const TAG_STYLE_CSS = `
-.tag__count {
-  background: unset !important;
-}`;
 
   if (METABAR) CSS += METABAR_CSS;
   if (DESC) CSS += DESC_CSS;
-  if (TAG_STYLE) CSS += TAG_STYLE_CSS;
 
   if (!document.getElementById(`${SCRIPT_ID}-style`)) {
     const styleElement = document.createElement('style');
@@ -101,18 +88,6 @@ function initCSS() {
     styleElement.id = `${SCRIPT_ID}-style`;
     styleElement.innerHTML = CSS;
     document.body.insertAdjacentElement('afterend', styleElement);
-  }
-}
-
-function revertTagStyle(parent = document) {
-  // Revert tag styling of 2020-05-22
-  for (const tag of $$('.tag.dropdown', parent)) {
-    const span = tag.firstElementChild;
-    const name = $('.tag__name', tag);
-    const count = $('.tag__count', tag);
-    count.innerText = ' (' + count.innerText + ') ';
-    name.appendChild(count);
-    span.insertAdjacentElement('afterbegin', name);
   }
 }
 
@@ -159,14 +134,12 @@ if ([content, imageDescription, tagBox, imageDescriptionText].every(ele => ele !
         if (node.matches('.js-tagsauce')) {
           const tagEdit = $('.js-imageform', node);
           if (TAG_BLOCK && tagEdit) tagEdit.classList.add('layout--narrow');
-          if (TAG_STYLE) revertTagStyle(node);
         }
       }
     }
   });
-  if (TAG_BLOCK || TAG_STYLE) observer.observe(content, {childList: true});
+  if (TAG_BLOCK) observer.observe(content, {childList: true});
 }
 
-if (TAG_STYLE) revertTagStyle();
 
 })();
