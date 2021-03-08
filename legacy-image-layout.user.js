@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Twibooru Legacy Image Layout
 // @description  Revert styling changes.
-// @version      1.1.1
+// @version      1.1.2
 // @author       Marker
 // @license      MIT
 // @namespace    https://github.com/marktaiwan/
@@ -28,7 +28,7 @@ config.registerSetting({
 config.registerSetting({
   title: 'Image description',
   key: 'description',
-  description: 'Use the old image description style. Hide empty descriptions.',
+  description: 'Use the old image description style.',
   type: 'checkbox',
   defaultValue: true
 });
@@ -119,7 +119,6 @@ function revertTagStyle(parent = document) {
 initCSS();
 const extrameta = $('#extrameta'),
       imageDescription = $('.image-description'),
-      imageDescriptionText = $('.image-description__text'),
       descriptionForm = $('#description-form'),
       content = $('#content'),
       tagBox = $('.js-tagsauce'),
@@ -132,10 +131,10 @@ if (METABAR && extrameta !== null) {
 }
 
 // Run if elements exists on page
-if ([content, imageDescription, tagBox, imageDescriptionText].every(ele => ele !== null)) {
+if ([content, tagBox].every(ele => ele !== null)) {
   // Revert tag width
   if (TAG_BLOCK) {
-    const oldDiv = imageDescription.parentElement;
+    const oldDiv = tagBox.parentElement;
     const newDiv = document.createElement('div');
     newDiv.classList.add('layout--narrow');
     content.insertBefore(newDiv, oldDiv);
@@ -143,13 +142,8 @@ if ([content, imageDescription, tagBox, imageDescriptionText].every(ele => ele !
     if (tagEdit !== null) tagEdit.classList.add('layout--narrow');
 
     if (adBox !== null) newDiv.appendChild(adBox);
-    newDiv.appendChild(imageDescription);
+    if (imageDescription !== null )newDiv.appendChild(imageDescription);
     if (descriptionForm !== null) newDiv.appendChild(descriptionForm);
-  }
-
-  // Hide empty description box
-  if (DESC && imageDescriptionText.firstChild === null && $('#edit-description', imageDescription) === null) {
-    imageDescription.classList.toggle('hidden');
   }
 
   // Reapply changes on tag edit
