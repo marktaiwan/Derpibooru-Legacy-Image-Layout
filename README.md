@@ -14,7 +14,6 @@ Once you have the extension enabled, [click here](https://github.com/marktaiwan/
 ![screenshot](https://raw.githubusercontent.com/marktaiwan/Derpibooru-Legacy-Image-Layout/master/images/upload-info.png)
 #### Image description
 Empty descriptions are hidden entirely
-![screenshot](https://raw.githubusercontent.com/marktaiwan/Derpibooru-Legacy-Image-Layout/master/images/image-description.png)
 #### Tag block
 ![screenshot](https://github.com/marktaiwan/Derpibooru-Legacy-Image-Layout/blob/master/images/tag-block.png?raw=true)
 #### Tag style
