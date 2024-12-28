@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Derpibooru Legacy Image Layout
 // @description  Revert styling changes.
-// @version      1.1.1
+// @version      1.1.2
 // @author       Marker
 // @license      MIT
 // @namespace    https://github.com/marktaiwan/
@@ -104,7 +104,8 @@ function applyTagBoxStyle(tagBox) {
 initCSS();
 const extrameta = $('#extrameta'),
       imageDescription = $('.image-description'),
-      imageDescriptionEdit = $('textarea#description'),
+      imageDescriptionTextarea = $('textarea#description'),
+      imageDescriptionEdit = $('#edit-description'),
       content = $('#content'),
       tagBox = $('.js-tagsauce');
 
@@ -114,7 +115,7 @@ if (METABAR && extrameta !== null) {
 }
 
 // Run if elements exists on page
-if ([content, imageDescription, imageDescriptionEdit, tagBox].every(ele => ele !== null)) {
+if ([content, imageDescription, imageDescriptionTextarea, tagBox].every(ele => ele !== null)) {
   // Revert tag width
   if (TAG_BLOCK) {
     const oldDiv = imageDescription.parentElement;
@@ -129,7 +130,7 @@ if ([content, imageDescription, imageDescriptionEdit, tagBox].every(ele => ele !
   }
 
   // Hide empty description box
-  if (DESC && imageDescriptionEdit.value === '') {
+  if (DESC && !imageDescriptionEdit && imageDescriptionTextarea.value === '') {
     imageDescription.classList.add('hidden');
   }
 
