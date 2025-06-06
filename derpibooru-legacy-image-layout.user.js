@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Derpibooru Legacy Image Layout
 // @description  Revert styling changes.
-// @version      1.1.2
+// @version      1.1.3
 // @author       Marker
 // @license      MIT
 // @namespace    https://github.com/marktaiwan/
@@ -88,7 +88,7 @@ function revertTagStyle(parent = document) {
     const span = tag.firstElementChild;
     const name = $('.tag__name', tag);
     const count = $('.tag__count', tag);
-    count.innerText = ' (' + count.innerText + ') ';
+    count.innerText = '(' + count.innerText + ')';
     name.appendChild(count);
     span.insertAdjacentElement('afterbegin', name);
   }
