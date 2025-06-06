@@ -14,7 +14,9 @@
 // @require      https://openuserjs.org/src/libs/mark.taiwangmail.com/Derpibooru_Unified_Userscript_UI_Utility.js?v1.2.2
 // @noframes
 // ==/UserScript==
-(function (){
+
+/* global ConfigManager */
+(function () {
 'use strict';
 
 const SCRIPT_ID = 'legacy_layout';
